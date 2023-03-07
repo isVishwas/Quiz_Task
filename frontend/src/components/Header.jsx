@@ -4,6 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userAction";
 import { useHistory } from "react-router-dom";
+import appImage from '../Images/logo.svg'
 
 const Header = () => {
   const history = useHistory('');
@@ -18,10 +19,18 @@ const Header = () => {
 
   return (
     <>
-      <Navbar bg="dark" expand="lg" variant="dark" collapseOnSelect>
+      <Navbar  className="bg-[#64748b]" expand="lg" variant="dark" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>Online Quiz App</Navbar.Brand>
+            <Navbar.Brand>
+            <img
+              alt=""
+              src={appImage}
+              width="40"
+              height="40"
+              className="d-inline-block align-top"
+            />{' '}
+              Quiz App</Navbar.Brand>
           </LinkContainer>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

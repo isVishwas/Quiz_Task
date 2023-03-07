@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { ORDER_LIST_MY_RESET } from "../constants/orderConstant";
+import { BASE_URL } from "../BaseUrl";
 import {
  GET_QUESTIONS_REQUEST,
  QUESTIONS_REQUEST_SUCCESS,
@@ -12,7 +12,7 @@ export const listOfQuestions = () => async (dispatch) => {
     try {
       dispatch({ type: GET_QUESTIONS_REQUEST });
 
-      const { data } = await axios.get("/api/questions");
+      const { data } = await axios.get(`${BASE_URL}/api/questions`);
 
       dispatch({
         type: QUESTIONS_REQUEST_SUCCESS,

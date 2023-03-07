@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { ORDER_LIST_MY_RESET } from "../constants/orderConstant";
+import { BASE_URL } from "../BaseUrl";
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -15,11 +15,14 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_SCORE_FAIL,
+  USER_UPDATE_SCORE_REQUEST,
+  USER_UPDATE_SCORE_SUCCESS,
 } from "../constants/userContants";
 
 export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
-  // dispatch({ type: ORDER_LIST_MY_RESET });
+  localStorage.removeItem("score");
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: USER_LOGOUT });
 };
@@ -29,7 +32,7 @@ export const login = (email, password) => async (dispatch) => {
     dispatch({ type: USER_LOGIN_REQUEST });
     const config = { headers: { "Contnet-Type": "application/json" } };
     const { data } = await axios.post(
-      "/api/users/login",
+      `${BASE_URL}/api/users/login`,
       { email, password },
       config
     );
@@ -52,9 +55,9 @@ export const login = (email, password) => async (dispatch) => {
 export const register = (name, email, password) => async (dispatch) => {
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
-    const config = { headers: { "Contnet-Type": "application/json" } };
+    const config = { headers: { "Content-Type": "application/json" } };
     const { data } = await axios.post(
-      "/api/users",
+      `${BASE_URL}/api/users`,
       { name, email, password },
       config
     );
@@ -92,7 +95,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/users/${id}`, config);
+    const { data } = await axios.get(`${BASE_URL}/api/users/${id}`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -123,11 +126,46 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.put("api/users/profile", user, config);
+    const { data } = await axios.put(`${BASE_URL}/api/users/profile`, user, config);
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+
+export const updateUserScore = (userId) => async (dispatch, getState) => {
+
+  try {
+    dispatch({
+      type: USER_UPDATE_SCORE_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+  const user = {
+    _id : userId.id , 
+    score : localStorage.getItem('score')
+  }
+
+    const { data } = await axios.put(`${BASE_URL}/api/users/score`, user, config);
+    dispatch({ type: USER_UPDATE_SCORE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_SCORE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

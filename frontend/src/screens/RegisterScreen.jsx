@@ -6,6 +6,7 @@ import Message from "../components/shared/Message";
 import Loader from "../components/shared/Loader";
 import { register } from "../actions/userAction";
 import FormContainer from "../components/shared/FromContainer";
+import loginScreen from '../Images/mobile-login.jpg'
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -38,14 +39,14 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <div class='flex justify-center'>
-      <Row>
-        <Col>
+      <Row className="shadow mt-5">
+        <Col className="my-4">
           <FormContainer>
             <h1>Register</h1>
-            {error && <Message varient="danger">{error}</Message>}
+            {error && <span className="text-[red] ">{error}*</span>}
             {loading && <Loader />}
-            {message && <Message variant="danger">{message}</Message>}
-            <Form onSubmit={submitHandler}>
+            {message && <span className="text-[red] ">{message}*</span>}
+            <Form onSubmit={submitHandler} className='mt-3'>
               <Form.Group controlId="email">
                 <Form.Label>Name</Form.Label>
                 <Form.Control
@@ -56,10 +57,10 @@ const RegisterScreen = ({ location, history }) => {
                 ></Form.Control>
               </Form.Group>
               <Form.Group controlId="email">
-                <Form.Label>Email Address</Form.Label>
+                <Form.Label>Username / Email</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="enter email"
+                  type="text"
+                  placeholder="username/email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 ></Form.Control>
@@ -74,7 +75,7 @@ const RegisterScreen = ({ location, history }) => {
                 ></Form.Control>
               </Form.Group>
               <Form.Group controlId="confirmPassword">
-                <Form.Label>COnfirm Password</Form.Label>
+                <Form.Label>Confirm Password</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Re-enter password"
@@ -82,13 +83,13 @@ const RegisterScreen = ({ location, history }) => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-              <Button type="submit" varient="primary">
+              <button className="mt-2 bg-blue-500 items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" type="submit" varient="primary">
                 SIGN IN
-              </Button>
+              </button>
             </Form>
-            <Row>
+            <Row className="mt-2">
               <Col>
-                Have an account !
+                Have an account ! <br/>
                 <Link to={redirect ? `login?redirect=${redirect}` : "/login"}>
                   Login
                 </Link>

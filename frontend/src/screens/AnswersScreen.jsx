@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
-import { listOfQuestions } from '../actions/quizAction';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import Loader from '../components/shared/Loader';
-import Message from '../components/shared/Message';
 
 export default function AnswersScreen() {
 
     const history = useHistory();
     const dispatch = useDispatch();
-    const [answers, setAnswers] = useState([]);
-
-    const quizQuestionsDetails = useSelector((state) => state.quizQuestionsDetails);
-    const { loading, error, quizQuestions } = quizQuestionsDetails;
-
-
+    const [listOfQuestion, setListOfQuestion] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(listOfQuestions());
 
+        setIsLoading(true);
+        const questionPicked = JSON.parse(localStorage.getItem('questionPicked'));
+        setListOfQuestion(questionPicked);
+
+        setIsLoading(false);
     }, [])
 
     const playQuiz = () => {
 
         localStorage.removeItem('score');
+        localStorage.removeItem('questionPicked');
         history.push('/quiz');
     }
 
@@ -31,23 +30,21 @@ export default function AnswersScreen() {
     return (
         <>
 
-            {loading ? (
+            {isLoading ? (
                 <Loader />
-            ) : error ? (
-                <Message variant="danger">{error}</Message>
             ) : (
                 <>
                     <button
                         onClick={() => playQuiz()}
-                        class="bg-blue-500 float-right hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                        class="bg-blue-500 float-right hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full sticky top-5">
                         Play Quiz Again
                     </button>
 
                     <div class="flex justify-center">
                         <div
-                            class="block max-w-2lg rounded-lg bg-white p-6 shadow-lg dark:bg-neutral-700">
+                            class="block max-w-2xl rounded-lg bg-white p-6 shadow-lg dark:bg-neutral-700">
                             {
-                                quizQuestions && quizQuestions.questions.length > 0 && quizQuestions.questions.map((data, index) => (
+                                listOfQuestion.length > 0 && listOfQuestion.map((data, index) => (
                                     <>
                                         <h5
                                             class="mb-2 mt-5 text-xxl font-medium leading-tight text-neutral-800 dark:text-neutral-50">

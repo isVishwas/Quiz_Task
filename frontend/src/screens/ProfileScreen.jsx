@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/shared/Message";
 import Loader from "../components/shared/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userAction";
+import loginScreen from '../Images/mobile-login.jpg'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -44,9 +45,9 @@ const ProfileScreen = ({ location, history }) => {
 
   return (
     <div class='flex justify-center'>
-      <Row>
-        <Col>
-          <h1>Update Information</h1>
+      <Row className="shadow my-5">
+        <Col className="my-5">
+          <h4>Update Information</h4>
           {error && <Message varient="danger">{error}</Message>}
           {success && <Message variant="success">Profile Updated</Message>}
           {loading && <Loader />}
@@ -88,13 +89,15 @@ const ProfileScreen = ({ location, history }) => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Button type="submit" varient="primary">
+            <button type="submit" className="mt-2 bg-blue-500 items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
               Update
-            </Button>
+            </button>
           </Form>
         </Col>
       </Row>
     </div>
+
+
   );
 };
 
